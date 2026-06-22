@@ -1,20 +1,25 @@
 const inputTxt = document.getElementById("input-el");
 const ulEl = document.getElementById("ul-el")
 const btnEl = document.getElementById("btn-el")
-
+const btnDl = document.getElementById("btn-del")
 let contents = [];
+let valueLocalStorage = JSON.parse(localStorage.getItem("values"))
 
+if(valueLocalStorage)
+{
+    contents = valueLocalStorage;
+    renderInputs()
+}
 btnEl.addEventListener("click",()=>{
     const value = inputTxt.value.trim()
     if(value !== "")
     {
         contents.push(value)
         inputTxt.value = ""
+        localStorage.setItem("values", JSON.stringify(contents))
+        renderInputs()
     }
-    renderInputs()
-    console.log("btn clicked")
 })
-
 function renderInputs()
 {
     let temp = ""
@@ -25,3 +30,10 @@ function renderInputs()
      
     ulEl.innerHTML = temp;
 }
+
+
+btnDl.addEventListener("click", ()=>{
+    localStorage.clear()
+    contents = [];
+    renderInputs()
+})
