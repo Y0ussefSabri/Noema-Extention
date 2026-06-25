@@ -1,11 +1,13 @@
 
-    const inputTxt = document.getElementById("input-el");
+    const inputTxt = document.getElementById("input-el")
     const ulEl = document.getElementById("ul-el")
     const btnEl = document.getElementById("btn-el")
     const btnDl = document.getElementById("btn-del")
     const btntab = document.getElementById("btn-savetab")
     const btnExp = document.getElementById("btn-export")
+    const btnAi = document.getElementById("btn-ai")
     let contents = [];
+    let aiContents = [];
     let valueLocalStorage = JSON.parse(localStorage.getItem("values"))
 
     if(valueLocalStorage)
@@ -31,9 +33,9 @@
                 temp+= `<li>${contents[i]}</li>`;
             }
         ulEl.innerHTML = temp;
+        // console.log(contents)
     }
-
-
+    
     btnDl.addEventListener("dblclick", ()=>{
         localStorage.clear()
         contents = [];
@@ -55,16 +57,32 @@
 
     })
 
-
     btnExp.addEventListener("click", ()=>{
-        if(contents.length == 0 ) return
-        const text = contents.join("\n")
-        const blob = new Blob([text], { type: "text/plain" })
+        if(aiContents.length === 0 ) return
+        const date = new Date().toLocaleDateString()
+        const text = `# Noema Captures — ${date}\n\n` + aiContents.join("\n\n---\n\n")
+    
+        const blob = new Blob([text], { type: "text/markdown" })
         const url = URL.createObjectURL(blob)
         const a = document.createElement("a")
         a.href = url
-        a.download = "noema-captures.txt"
+        a.download = "noema-captures.md"
         a.click()
 
         URL.revokeObjectURL(url)
+    })
+
+    btnAi.addEventListener("click", async ()=>{
+            if(contents.length === 0 ) return
+            const response = await fetch("http://127.0.0.1:8000/pipline",
+                {
+                    method:"POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents })
+                });
+
+            const data = await response.json();
+            console.log(data.response)
+            aiContents.push(data.response)
+            // renderInputs(aiContents)
     })

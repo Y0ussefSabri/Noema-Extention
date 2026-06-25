@@ -82,5 +82,16 @@ ul
 {
     background: black;
     color:aliceblue;
-
+}
+#btn-ai
+{
+    width: 100%;
+    background: rgb(179, 70, 201);
+    margin-top: 12px;
+}
+#btn-ai:hover
+{
+    background: rgb(206, 104, 226);
+    border-color: #7c4d94;
+    outline: 3px solid;
 }
