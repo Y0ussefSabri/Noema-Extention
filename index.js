@@ -74,7 +74,7 @@
 
     btnAi.addEventListener("click", async ()=>{
             if(contents.length === 0 ) return
-            const response = await fetch("http://127.0.0.1:8000/pipline",
+            const response = await fetch("http://divine-enthusiasm-production-14b5.up.railway.app/pipline",
                 {
                     method:"POST",
                     headers: { "Content-Type": "application/json" },
